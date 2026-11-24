@@ -1,0 +1,185 @@
+$ python -m pytest test_loan_eligibility.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.14.8, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7
+plugins: cov-7.1.0, locust-2.46.4, asyncio-1.4.0, typeguard-4.6.0, langsmith-0.14.7, hypothesis-6.170.17, anyio-4.13.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 8 items
+
+test_loan_eligibility.py::test_parse_income_no_crash FAILED              [ 12%]
+test_loan_eligibility.py::test_parse_income_valid_numbers PASSED         [ 25%]
+test_loan_eligibility.py::test_monthly_emi_no_crash FAILED               [ 37%]
+test_loan_eligibility.py::test_monthly_emi_valid_inputs PASSED           [ 50%]
+test_loan_eligibility.py::test_monthly_emi_zero_rate FAILED              [ 62%]
+test_loan_eligibility.py::test_pan_category_no_crash FAILED              [ 75%]
+test_loan_eligibility.py::test_pan_category_valid_codes PASSED           [ 87%]
+test_loan_eligibility.py::test_pan_category_random_text FAILED           [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_parse_income_no_crash __________________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 34, in test_parse_income_no_crash
+  |     @given(ANY_INPUT)
+  |                    ^^
+  |   File "/home/pulkithanda/.local/lib/python3.14/site-packages/hypothesis/core.py", line 2334, in wrapped_test
+  |     raise the_error_hypothesis_found
+  | ExceptionGroup: Hypothesis found 2 distinct failures. (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 37, in test_parse_income_no_crash
+    |     result = parse_income(value)
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 4, in parse_income
+    |     return int(income.replace(',', ''))
+    | ValueError: invalid literal for int() with base 10: ''
+    | Failing test case: test_parse_income_no_crash(
+    |     value='',
+    | )
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 37, in test_parse_income_no_crash
+    |     result = parse_income(value)
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 4, in parse_income
+    |     return int(income.replace(',', ''))
+    |                ^^^^^^^^^^^^^^
+    | AttributeError: 'NoneType' object has no attribute 'replace'
+    | Failing test case: test_parse_income_no_crash(
+    |     value=None,  # or any other generated value
+    | )
+    +------------------------------------
+__________________________ test_monthly_emi_no_crash ___________________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 55, in test_monthly_emi_no_crash
+  |     @given(ANY_INPUT)
+  |                    ^^
+  |   File "/home/pulkithanda/.local/lib/python3.14/site-packages/hypothesis/core.py", line 2334, in wrapped_test
+  |     raise the_error_hypothesis_found
+  | ExceptionGroup: Hypothesis found 2 distinct failures. (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 58, in test_monthly_emi_no_crash
+    |     result = monthly_emi(value)
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 7, in monthly_emi
+    |     principal, rate, years = details.split(',')
+    |     ^^^^^^^^^^^^^^^^^^^^^^
+    | ValueError: not enough values to unpack (expected 3, got 1)
+    | Failing test case: test_monthly_emi_no_crash(
+    |     value='',
+    | )
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 58, in test_monthly_emi_no_crash
+    |     result = monthly_emi(value)
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 7, in monthly_emi
+    |     principal, rate, years = details.split(',')
+    |                              ^^^^^^^^^^^^^
+    | AttributeError: 'NoneType' object has no attribute 'split'
+    | Failing test case: test_monthly_emi_no_crash(
+    |     value=None,  # or any other generated value
+    | )
+    +------------------------------------
+__________________________ test_monthly_emi_zero_rate __________________________
+
+    def test_monthly_emi_zero_rate():
+        """A zero interest rate must not divide by zero."""
+>       assert monthly_emi("120000,0,1") == 10000.0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+test_loan_eligibility.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+details = '120000,0,1'
+
+    def monthly_emi(details):
+        principal, rate, years = details.split(',')
+        r = int(rate) / 1200
+        n = int(years) * 12
+>       return round(int(principal) * r * (1 + r) ** n / ((1 + r) ** n - 1), 2)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       ZeroDivisionError: division by zero
+
+loan_eligibility.py:10: ZeroDivisionError
+__________________________ test_pan_category_no_crash __________________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 86, in test_pan_category_no_crash
+  |     @given(ANY_INPUT)
+  |                    ^^
+  |   File "/home/pulkithanda/.local/lib/python3.14/site-packages/hypothesis/core.py", line 2334, in wrapped_test
+  |     raise the_error_hypothesis_found
+  | ExceptionGroup: Hypothesis found 3 distinct failures. (3 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 89, in test_pan_category_no_crash
+    |     result = pan_category(value)
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 13, in pan_category
+    |     return CATEGORIES[pan[3].upper()]
+    |            ~~~~~~~~~~^^^^^^^^^^^^^^^^
+    | KeyError: '0'
+    | Failing test case: test_pan_category_no_crash(
+    |     value='0000',
+    | )
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 89, in test_pan_category_no_crash
+    |     result = pan_category(value)
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 13, in pan_category
+    |     return CATEGORIES[pan[3].upper()]
+    |                       ~~~^^^
+    | IndexError: string index out of range
+    | Failing test case: test_pan_category_no_crash(
+    |     value='',
+    | )
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 89, in test_pan_category_no_crash
+    |     result = pan_category(value)
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 13, in pan_category
+    |     return CATEGORIES[pan[3].upper()]
+    |                       ~~~^^^
+    | TypeError: 'NoneType' object is not subscriptable
+    | Failing test case: test_pan_category_no_crash(
+    |     value=None,
+    | )
+    +------------------------------------
+________________________ test_pan_category_random_text _________________________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 103, in test_pan_category_random_text
+  |     @given(st.text(alphabet=ascii_letters + digits + " @-#", max_size=40))
+  |                    ^^^
+  |   File "/home/pulkithanda/.local/lib/python3.14/site-packages/hypothesis/core.py", line 2334, in wrapped_test
+  |     raise the_error_hypothesis_found
+  | ExceptionGroup: Hypothesis found 2 distinct failures. (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 105, in test_pan_category_random_text
+    |     assert pan_category(text) in set(CATEGORIES.values()) | {"Unknown"}
+    |            ~~~~~~~~~~~~^^^^^^
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 13, in pan_category
+    |     return CATEGORIES[pan[3].upper()]
+    |            ~~~~~~~~~~^^^^^^^^^^^^^^^^
+    | KeyError: '0'
+    | Failing test case: test_pan_category_random_text(
+    |     text='0000',
+    | )
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/test_loan_eligibility.py", line 105, in test_pan_category_random_text
+    |     assert pan_category(text) in set(CATEGORIES.values()) | {"Unknown"}
+    |            ~~~~~~~~~~~~^^^^^^
+    |   File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 13, in pan_category
+    |     return CATEGORIES[pan[3].upper()]
+    |                       ~~~^^^
+    | IndexError: string index out of range
+    | Failing test case: test_pan_category_random_text(
+    |     text='',
+    | )
+    +------------------------------------
+=========================== short test summary info ============================
+FAILED test_loan_eligibility.py::test_parse_income_no_crash - ExceptionGroup:...
+FAILED test_loan_eligibility.py::test_monthly_emi_no_crash - ExceptionGroup: ...
+FAILED test_loan_eligibility.py::test_monthly_emi_zero_rate - ZeroDivisionErr...
+FAILED test_loan_eligibility.py::test_pan_category_no_crash - ExceptionGroup:...
+FAILED test_loan_eligibility.py::test_pan_category_random_text - ExceptionGro...
+========================= 5 failed, 3 passed in 0.71s ==========================
+$ python -m pytest test_loan_eligibility.py -v

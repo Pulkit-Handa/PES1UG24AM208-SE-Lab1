@@ -1,0 +1,9 @@
+$ printf '50,000\n500000,10,5\nABCPE1234F\n' | python loan_eligibility.py
+==== Running parse_income ====
+Enter monthly income (e.g. 50,000): Income: 50000
+
+==== Running monthly_emi ====
+Enter principal,rate,years (e.g. 500000,10,5): Monthly EMI: 10623.52
+
+==== Running pan_category ====
+Enter a PAN number (e.g. ABCPE1234F): PAN Category: Individual

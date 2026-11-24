@@ -1,0 +1,11 @@
+$ printf 'abc\n500000,10,5\nABCPE1234F\n' | python loan_eligibility.py
+==== Running parse_income ====
+Enter monthly income (e.g. 50,000): Traceback (most recent call last):
+  File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 32, in <module>
+    main()
+    ~~~~^^
+  File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 18, in main
+    result = parse_income(user_input)
+  File "/home/pulkithanda/Downloads/L6_L7_26_loan_eligibility-main/Lab 7/loan_eligibility.py", line 4, in parse_income
+    return int(income.replace(',', ''))
+ValueError: invalid literal for int() with base 10: 'abc'
