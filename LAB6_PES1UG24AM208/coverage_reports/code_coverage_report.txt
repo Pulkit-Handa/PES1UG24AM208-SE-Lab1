@@ -1,0 +1,11 @@
+$ coverage erase
+$ coverage run -m pytest CodeCoverageTest_loan_eligibility_application.py -q
+...............                                                          [100%]
+15 passed in 0.02s
+$ coverage report -m
+Name                                               Stmts   Miss  Cover   Missing
+--------------------------------------------------------------------------------
+CodeCoverageTest_loan_eligibility_application.py      35      0   100%
+loan_eligibility.py                                   33      0   100%
+--------------------------------------------------------------------------------
+TOTAL                                                 68      0   100%
