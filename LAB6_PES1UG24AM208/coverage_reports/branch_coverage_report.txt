@@ -1,0 +1,11 @@
+$ coverage erase
+$ coverage run --branch -m pytest BranchCoverageTest_loan_eligibility_application.py -q
+.......................                                                  [100%]
+23 passed in 0.03s
+$ coverage report -m
+Name                                                 Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------------------------------------------------
+BranchCoverageTest_loan_eligibility_application.py      32      0      0      0   100%
+loan_eligibility.py                                     33      0     24      0   100%
+------------------------------------------------------------------------------------------------
+TOTAL                                                   65      0     24      0   100%
